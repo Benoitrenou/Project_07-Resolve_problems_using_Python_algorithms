@@ -4,8 +4,14 @@ actions_list = []
 with open("dataset1_Python+P7_v2.csv", newline='') as file:
     for row in file:
         splitted_row = row.split(sep=',')
-        action = (splitted_row[0], abs(int(float(splitted_row[1])*100)), abs(int(float(splitted_row[2][0:-2])*100)))
-        actions_list.append(action)
+        action_name = splitted_row[0]
+        action_price = float(splitted_row[1])*100
+        splitted_row[2].replace('\n', '')
+        splitted_row[2].replace('\r', '')
+        action_benefit = action_price*float(splitted_row[2])/100
+        action = (action_name, int(action_price), action_benefit)
+        if action_price>0:
+            actions_list.append(action)
 
 
 def algo_optimized(capacite, elements):
@@ -32,13 +38,15 @@ def algo_optimized(capacite, elements):
         n -= 1
 
     total_cost = sum(action[1] for action in elements_selection)/100
-    total_profit = sum(action[2] for action in elements_selection)/100
+    total_profit = round(sum(action[2] for action in elements_selection)/100, 2)
     print (f'Total cost = {total_cost}')
     print (f'Total profit = {total_profit}')
     return matrice[-1][-1], elements_selection
+
 start = process_time()
-print(algo_optimized(500*100, actions_list))
+wallet = algo_optimized(500*100, actions_list)
+for action in wallet[1]:
+    print (f'{action[0]} | {action[1]/100} | {round(action[2]/100, 2)}')
 end = process_time()
 print (f'Time to proceed algorithm : {round(end-start, 2)} seconds')
-
 
