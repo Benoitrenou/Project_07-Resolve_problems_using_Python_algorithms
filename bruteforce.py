@@ -21,38 +21,36 @@ actions_src = [
     (20, 114, 18)
     ]
 
-
-class Action: 
-    def __init__(self, number, cost, rate):
-        self.number = number
-        self.cost = cost
-        self.rate = rate
-        self.benefits = round(self.cost*(1+(self.rate/100))-self.cost, 2)
-    
-    def __repr__(self):
-        return (f"({self.number}, {self.cost}, {self.benefits})")
-
-    def __str__(self):
-        return (f"{self.number}, {self.cost}, {self.benefits}")
-
-
-
-def algo_force_brute(capacite, elements, elements_selection = []):
-    if elements:
-        val1, lstVal1 = algo_force_brute(capacite, elements[1:], elements_selection)
-        val = elements[0]
-        if val[1] <= capacite:
-            val2, lstVal2 = algo_force_brute(capacite - val[1], elements[1:], elements_selection + [val])
-            if val1 < val2:
-                return val2, lstVal2
-        return val1, lstVal1
-    else:
-        return sum([i[2] for i in elements_selection]), elements_selection
-
 actions_list = []
 for action in actions_src:
     benefits = round(action[1]*(1+(action[2]/100))-action[1], 2)
     new_action = (action[0], action[1], benefits)
     actions_list.append(new_action)
 
-print(algo_force_brute(500, actions_list))
+def algo_force_brute(capacite, elements, elements_selection = []):
+    if elements:
+        val1, lstVal1 = algo_force_brute(capacite, elements[1:], elements_selection)
+        #ignore élément courant -> [1:]
+        val = elements[0]
+        #isole élément courant
+        if val[1] <= capacite:
+        #vérification si contrainte élément courant <= capacité 
+            val2, lstVal2 = algo_force_brute(capacite - val[1], elements[1:], elements_selection + [val])
+            #si c'est le cas, rappel fonction en retirant capacité poids élément courant val[1] / renvoie liste éléments sans courant / ajout élément courant dans éléments sélectionnés
+            if val1 < val2:
+            #vérification si solution meilleure avec ajout élément ou non
+                return val2, lstVal2
+        return val1, lstVal1
+        #si pas le cas, revnoie liste sans élément courant
+    else:
+        return sum([i[2] for i in elements_selection]), elements_selection
+        #retour somme des valeurs et liste des éléments sélectionnés
+
+wallet = algo_force_brute(500, actions_list)
+total_profit = round(wallet[0],2)
+total_cost = sum(action[1] for action in wallet[1])
+print(f'Coût total portefeuille : {total_cost}€')
+print(f'Bénéfice après 2 ans : {total_profit}€')
+print('Actions comprises dans le portefeuille :')
+for action in wallet[1]:
+    print(f'N°{action[0]} | Prix : {action[1]}€ | Profit : {action[2]}€')

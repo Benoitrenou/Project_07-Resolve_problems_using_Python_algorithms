@@ -1,7 +1,7 @@
-from time import process_time
+dataset_ref = input('Quel dataset souhaitez-vous analyser : 1 - 2 ?')
 
 actions_list = []
-with open("dataset1_Python+P7_v2.csv", newline='') as file:
+with open(f"dataset{dataset_ref}_Python+P7.csv", newline='') as file:
     for row in file:
         splitted_row = row.split(sep=',')
         action_name = splitted_row[0]
@@ -21,9 +21,16 @@ def algo_optimized(capacite, elements):
     for i in range(1, len(elements) + 1):
         for w in range(1, capacite + 1):
             if elements[i-1][1] <= w:
+            # si le poids de l'élément courant est inférieur à la capacité étudiée
                 matrice[i][w] = max(elements[i-1][2] + matrice[i-1][w-elements[i-1][1]], matrice[i-1][w])
+                # on entre au croisement matrice de la ligne de l'elt actuel et de la capacité étudiée
+                # on attribue le plus grand nombre entre :
+                    # l'addition de la valeur de l'elt actuel et la valeur optimisée dans la ligne précédent de la matrice pour la capacité restante après retrait du poids de l'elt actuel à la capacité étudiée
+                    # et la valeur inscrite dans la matrice précédente pour la même capacité étudiée
             else:
+             #si le poids elt courant est supérieur à capacité étudiée
                 matrice[i][w] = matrice[i-1][w]
+                # on reprend valeur optimisée de la ligne précédente pour la même capacité
 
     # Retrouver les éléments en fonction de la somme
     w = capacite
@@ -43,10 +50,6 @@ def algo_optimized(capacite, elements):
     print (f'Total profit = {total_profit}')
     return matrice[-1][-1], elements_selection
 
-start = process_time()
 wallet = algo_optimized(500*100, actions_list)
 for action in wallet[1]:
     print (f'{action[0]} | {action[1]/100} | {round(action[2]/100, 2)}')
-end = process_time()
-print (f'Time to proceed algorithm : {round(end-start, 2)} seconds')
-
