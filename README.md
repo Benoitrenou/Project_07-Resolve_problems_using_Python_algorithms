@@ -12,7 +12,7 @@ Lancez le script via votre terminal
 
 Le dataset est directement intégré au script
 
-# I. Utilisation du script optimized.py
+# II. Utilisation du script optimized.py
 
 Lancez le script via votre terminal
 
