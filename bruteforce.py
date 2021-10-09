@@ -1,3 +1,5 @@
+from datetime import datetime
+
 actions_src = [
     (1, 20, 5),
     (2, 30, 10), 
@@ -28,29 +30,35 @@ for action in actions_src:
     actions_list.append(new_action)
 
 def algo_force_brute(capacite, elements, elements_selection = []):
-    if elements:
-        val1, lstVal1 = algo_force_brute(capacite, elements[1:], elements_selection)
-        #ignore élément courant -> [1:]
-        val = elements[0]
-        #isole élément courant
-        if val[1] <= capacite:
-        #vérification si contrainte élément courant <= capacité 
-            val2, lstVal2 = algo_force_brute(capacite - val[1], elements[1:], elements_selection + [val])
-            #si c'est le cas, rappel fonction en retirant capacité poids élément courant val[1] / renvoie liste éléments sans courant / ajout élément courant dans éléments sélectionnés
-            if val1 < val2:
-            #vérification si solution meilleure avec ajout élément ou non
-                return val2, lstVal2
-        return val1, lstVal1
-        #si pas le cas, revnoie liste sans élément courant
+    if len(elements) > 1:
+        val1, lstVal1  = algo_force_brute(capacite, elements[1:], elements_selection)
     else:
-        return sum([i[2] for i in elements_selection]), elements_selection
-        #retour somme des valeurs et liste des éléments sélectionnés
+        val1, lstVal1 = sum(i[2] for i in elements_selection), elements_selection
+    val = elements[0]
+    if val[1] <= capacite:
+        if len(elements)>1:
+            val2, lstVal2 = algo_force_brute(capacite - val[1], elements[1:], elements_selection + [val])
+        else:
+            val2, lstVal2 = sum(
+                i[2] for i in (elements_selection + [val])
+            ), elements_selection + [val]
+        if val1 < val2:
+            return val2, lstVal2
+    return val1, lstVal1
 
+actions_list = []
+for action in actions_src:
+    benefits = round(action[1]*(1+(action[2]/100))-action[1], 2)
+    new_action = (action[0], action[1], benefits)
+    actions_list.append(new_action)
+
+a=datetime.now()
 wallet = algo_force_brute(500, actions_list)
+print(datetime.now()-a)
 total_profit = round(wallet[0],2)
 total_cost = sum(action[1] for action in wallet[1])
 print(f'Coût total portefeuille : {total_cost}€')
 print(f'Bénéfice après 2 ans : {total_profit}€')
 print('Actions comprises dans le portefeuille :')
 for action in wallet[1]:
-    print(f'N°{action[0]} | Prix : {action[1]}€ | Profit : {action[2]}€')
+    print(f'N°{action[0]:02.0f} | Prix : {action[1]}€ | Profit : {action[2]}€')
