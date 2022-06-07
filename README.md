@@ -1,21 +1,28 @@
-Afin de faire fonctionner ces scripts, veuillez suivre les étapes suivantes
+This scenario takes place in enterprise of financial consulting.
 
-Tout d'abord, clônez en local le dépôt distant
+Two datasets of stocks, their price and their expected profit rate are given. One person of the enterprise has chosen a list of stocks to buy with a determined budget of 500.
 
-    $ git clone https://github.com/Benoitrenou/projet_07.git    
-    
-# I. Utilisation du script bruteforce.py
+The goal is to develop two algorithms, first one with brutal force, second one optimized, and thern compare results with the proposition of the employee.
 
-Lancez le script via votre terminal
+Objectives of the project:
+    - Discover how algorithms work
+    - Develop algorithms
+    - Measure and compare algorithmic performances - Big O notation
+
+Clone the remote repository and follow the instructions below
+
+# I. Use brute force algorithm
+
+From terminal, launch via the command
 
     $ python bruteforce.py
 
-Le dataset est directement intégré au script
+Dataset and budget are directly integrated to the script
 
-# II. Utilisation du script optimized.py
+# II. Use optimized algorithm
 
-Lancez le script via votre terminal
+From terminal, launch via the command
 
     $ python optimized.py
 
-Suivez les instructions et choisissez un des datasets intégrés au dépôt distant en entrant 1 ou 2 dans le terminal
+Follow the instructions and choose one of the dasatets integrated into the repository by entering 1 or 2 into the terminal
