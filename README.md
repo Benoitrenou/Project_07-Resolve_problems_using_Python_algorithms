@@ -26,3 +26,7 @@ From terminal, launch via the command
     $ python optimized.py
 
 Follow the instructions and choose one of the dasatets integrated into the repository by entering 1 or 2 into the terminal
+
+# III. Results description and analysis
+
+You can access to the presentation and analysis of results in the file soutenance_projet_07.pdf (French)
